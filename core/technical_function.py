@@ -40,7 +40,6 @@ def checking_calculations(ufpy_points: List[Point], unifloc_points: List[Point],
     return True
 
 
-
 def calculation_relative_fault(ufpy_point: Point, unifloc_point: Point, flag: str) -> float:
     """
     В данной функции реализован рассчет относительной погрешности параметра
@@ -67,27 +66,24 @@ def calculation_relative_fault(ufpy_point: Point, unifloc_point: Point, flag: st
     #
     # return absolute_fault
 
-def creating_points(testing_data: List[Tuple], bo_m3m3: List[float], rs_m3m3: List[float],
-                    pb_atma: List[float]
+
+def creating_points(testing_data: List[Tuple], parameters: Tuple[List[float], ...]
                     ) -> List[Point]:
     """
     Создание списка объектов класса Point
     :param testing_data: Список с кортежами исходных давлений и температур
-    :param bo_m3m3: список с рассчитанными объемными коэффициентами нефти
-    :param rs_m3m3: список с рассчитанными газосодержаниями
-    :param pb_atma: список с рассчитанными давлениями насыщения
+    :param parameters: Кортеж со списками значений для параметров рассчитанных модулем
     :return: список содержащий объекты класса Point
     """
     points = list()
-    if len(bo_m3m3) == len(testing_data):
-        for i in range(0, len(testing_data) - 1):
-            current_PT_tuple = testing_data[i]
-            point = Point(p_atma=current_PT_tuple[0],
-                          t_c=current_PT_tuple[1],
-                          bo_m3m3=bo_m3m3[i],
-                          rs_m3m3=rs_m3m3[i],
-                          pb_atma=pb_atma[i]
-                          )
-            points.append(point)
+    for i in range(0, len(testing_data) - 1):
+        current_PT_tuple = testing_data[i]
+        point = Point(p_atma=current_PT_tuple[0],
+                      t_c=current_PT_tuple[1],
+                      bo_m3m3=parameters[0][i],
+                      rs_m3m3=parameters[1][i],
+                      pb_atma=parameters[2][i]
+                      )
+        points.append(point)
 
     return points

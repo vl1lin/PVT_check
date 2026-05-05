@@ -14,13 +14,13 @@ class Core(ABC):
         """
         parameter_data = []
         for data_tuple in self.tested_data:
-            if flag is "rs":
+            if flag == "rs":
                 parameter = self.calculation_rs_m3m3(data_tuple[0], data_tuple[1])
 
-            elif flag is "bo":
+            elif flag == "bo":
                 parameter = self.calculation_bo_m3m3(data_tuple[0], data_tuple[1])
 
-            elif flag is "pb":
+            elif flag == "pb":
                 parameter = self.calculation_pb_atma(data_tuple[1])
 
             else:
@@ -45,7 +45,7 @@ class Core(ABC):
         """
         pass
 
-    def calculation_pb_atma(self, rsb: float, t_c: float) -> float:
+    def calculation_pb_atma(self, t_c: float, rsb: float = 1) -> float:
         """Расчет давления насыщения по известному газосодержанию при давлении насыщения и температуре
         :param rsb: газосодержание при давлении насыщения
         :param t_c: температура заданная в цельсиях
@@ -67,7 +67,7 @@ class UfpyCore(Core):
         rs_m3m3 = self.fluid_as_ufpy.calc_rs_m3m3(p_atma=p_atma, t_C=t_c)
         return rs_m3m3
 
-    def calculation_pb_atma(self, rsb: float, t_c: float) -> float:
+    def calculation_pb_atma(self, t_c: float, rsb: float = 1) -> float:
         pb_atma = self.fluid_as_ufpy.calc_pb_atma(rsb=rsb, t_C=t_c)
         return pb_atma
 
@@ -87,6 +87,6 @@ class UniflocCore(Core):
         rs_m3m3 = self.unifloc_api.PVT_rs_m3m3(p_atma=p_atma, t_C=t_c, PVT_json=self.fluid_as_unifloc)
         return rs_m3m3
 
-    def calculation_pb_atma(self, t_c: float) -> float:
+    def calculation_pb_atma(self, t_c: float, rsb: float = 1) -> float:
         pb_atma = self.unifloc_api.PVT_pb_atma(t_C=t_c, PVT_json=self.fluid_as_unifloc)
         return pb_atma

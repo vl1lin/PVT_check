@@ -2,6 +2,9 @@ from ufpy.pvt import PVT
 from dataclasses import dataclass
 from typing import List, Tuple
 import sys
+unifloc_path = r'C:\unifloc_vba-master'
+unifloc_vba = unifloc_path + r'\UniflocVBA_7.xlam'
+sys.path.insert(0, unifloc_path)
 import unifloc_vba_python_api.python_api as unifloc
 
 
@@ -23,17 +26,14 @@ class DefaultConfig:
             gamma_gas=self.gamma_gas, gamma_oil=self.gamma_oil, gamma_wat=self.gamma_wat,
             rsb_m3m3=self.rsb_m3m3,
             pb_atma=self.pb_atma,
-            b_oilb_m3m3=self.bob_m3m3,
-            mu_oilb_cP=self.muob_cp,
+            bob_m3m3=self.bob_m3m3,
+            muob_cP=self.muob_cp,
             t_res_C=self.t_res_c,
         )
         return pvt
 
     @staticmethod
     def initiate_unifloc_api():
-        unifloc_path = r'C:\unifloc_vba-master'
-        unifloc_vba = unifloc_path + r'UniflocVBA_7.xlam'
-        sys.path.insert(0, unifloc_path)
         unf = unifloc.API(unifloc_vba)
         return unf
 

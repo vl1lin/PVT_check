@@ -4,9 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b6966855-a996-4e66-9548-a342c6913ce3" name="Changes" comment="Начало работы над проектом&#10;Написано: обертки для расчетов, каркас конфигов для расчетов">
+    <list default="true" id="b6966855-a996-4e66-9548-a342c6913ce3" name="Changes" comment="Написано: технические функции, класс Point">
+      <change afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/classes/point.py" beforeDir="false" afterPath="$PROJECT_DIR$/classes/point.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/configs/default.py" beforeDir="false" afterPath="$PROJECT_DIR$/configs/default.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/core/main_function.py" beforeDir="false" afterPath="$PROJECT_DIR$/core/main_function.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/core/technical_function.py" beforeDir="false" afterPath="$PROJECT_DIR$/core/technical_function.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -33,13 +35,19 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;master&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Python.default.executor": "Run",
+    "Python.main.executor": "Run",
+    "Python.main_function.executor": "Run",
+    "Python.point.executor": "Run",
+    "Python.technical_function.executor": "Run",
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "git-widget-placeholder": "master",
+    "last_opened_file_path": "C:/Users/79371/Desktop/проекты/ScriptChoke"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
       <recent name="C:\Users\79371\Desktop\проекты\PVT_check\configs" />
@@ -69,11 +77,20 @@
       <option name="project" value="LOCAL" />
       <updated>1777914413599</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="Написано: технические функции, класс Point">
+      <option name="closed" value="true" />
+      <created>1778006536721</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1778006536723</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Начало работы над проектом&#10;Написано: обертки для расчетов, каркас конфигов для расчетов" />
-    <option name="LAST_COMMIT_MESSAGE" value="Начало работы над проектом&#10;Написано: обертки для расчетов, каркас конфигов для расчетов" />
+    <MESSAGE value="Написано: технические функции, класс Point" />
+    <option name="LAST_COMMIT_MESSAGE" value="Написано: технические функции, класс Point" />
   </component>
 </project>
