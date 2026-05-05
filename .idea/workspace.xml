@@ -4,21 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b6966855-a996-4e66-9548-a342c6913ce3" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/PVT_check.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/profiles_settings.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/classes/__init__.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/classes/plot.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/classes/point.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/configs/__init__.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/configs/default.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/core/__init__.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/core/main_function.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/core/technical_function.py" afterDir="false" />
+    <list default="true" id="b6966855-a996-4e66-9548-a342c6913ce3" name="Changes" comment="Начало работы над проектом&#10;Написано: обертки для расчетов, каркас конфигов для расчетов">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/classes/point.py" beforeDir="false" afterPath="$PROJECT_DIR$/classes/point.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/core/technical_function.py" beforeDir="false" afterPath="$PROJECT_DIR$/core/technical_function.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -72,6 +61,19 @@
       <option name="presentableId" value="Default" />
       <updated>1777235045637</updated>
     </task>
+    <task id="LOCAL-00001" summary="Начало работы над проектом&#10;Написано: обертки для расчетов, каркас конфигов для расчетов">
+      <option name="closed" value="true" />
+      <created>1777914413599</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1777914413599</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Начало работы над проектом&#10;Написано: обертки для расчетов, каркас конфигов для расчетов" />
+    <option name="LAST_COMMIT_MESSAGE" value="Начало работы над проектом&#10;Написано: обертки для расчетов, каркас конфигов для расчетов" />
   </component>
 </project>
