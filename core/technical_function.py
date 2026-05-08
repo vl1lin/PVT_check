@@ -1,15 +1,18 @@
-from typing import List, Tuple, Optional
+from typing import List, Tuple
+
 from classes.point import Point
-from core.main_function import UfpyCore, UniflocCore
+from core.main_function import Core
 
 
-def calculation_of_parameters(module: Optional[UfpyCore, UniflocCore]) -> Tuple[List[float], List[float], List[float]]:
+def calculation_of_parameters(
+    module: Core,
+) -> Tuple[List[float], List[float], List[float]]:
     """
     Данная функция вызывает рассчет параметров с помощью реализаций юнифлок или юфпи
     :param module: объект класса UfpyCore или UniflocCore позволяющий произвести рассчет параметров
     :return: Кортеж списков рассчитанных параметров
     """
-    if isinstance(module, (UfpyCore, UniflocCore)):
+    if isinstance(module, Core):
         bo_m3m3 = module.calculation_parameter("bo")
         rs_m3m3 = module.calculation_parameter("rs")
         pb_atma = module.calculation_parameter("pb")
@@ -20,7 +23,9 @@ def calculation_of_parameters(module: Optional[UfpyCore, UniflocCore]) -> Tuple[
     return bo_m3m3, rs_m3m3, pb_atma
 
 
-def checking_calculations(ufpy_points: List[Point], unifloc_points: List[Point], flag: str) -> bool:
+def checking_calculations(
+    ufpy_points: List[Point], unifloc_points: List[Point], flag: str
+) -> bool:
     """
     Функция проверяет и сравнивает результаты рассчетов полученные с помощью разных модулей
     :param ufpy_points: Список точек полученных рассчетом модуля ufpy
@@ -32,7 +37,9 @@ def checking_calculations(ufpy_points: List[Point], unifloc_points: List[Point],
         raise ValueError
 
     for i in range(0, len(ufpy_points) - 1):
-        relative_fault = calculation_relative_fault(ufpy_points[i], unifloc_points[i], flag)
+        relative_fault = calculation_relative_fault(
+            ufpy_points[i], unifloc_points[i], flag
+        )
         if relative_fault > 5:
             print()
             return False
@@ -40,7 +47,9 @@ def checking_calculations(ufpy_points: List[Point], unifloc_points: List[Point],
     return True
 
 
-def calculation_relative_fault(ufpy_point: Point, unifloc_point: Point, flag: str) -> float:
+def calculation_relative_fault(
+    ufpy_point: Point, unifloc_point: Point, flag: str
+) -> float:
     """
     В данной функции реализован рассчет относительной погрешности параметра
     :param ufpy_point: Точка содержащая значения полученные в результате рассчетов модуля ufpy
@@ -67,8 +76,9 @@ def calculation_relative_fault(ufpy_point: Point, unifloc_point: Point, flag: st
     # return absolute_fault
 
 
-def creating_points(testing_data: List[Tuple], parameters: Tuple[List[float], ...]
-                    ) -> List[Point]:
+def creating_points(
+    testing_data: List[Tuple], parameters: Tuple[List[float], ...]
+) -> List[Point]:
     """
     Создание списка объектов класса Point
     :param testing_data: Список с кортежами исходных давлений и температур
@@ -78,12 +88,13 @@ def creating_points(testing_data: List[Tuple], parameters: Tuple[List[float], ..
     points = list()
     for i in range(0, len(testing_data) - 1):
         current_PT_tuple = testing_data[i]
-        point = Point(p_atma=current_PT_tuple[0],
-                      t_c=current_PT_tuple[1],
-                      bo_m3m3=parameters[0][i],
-                      rs_m3m3=parameters[1][i],
-                      pb_atma=parameters[2][i]
-                      )
+        point = Point(
+            p_atma=current_PT_tuple[0],
+            t_c=current_PT_tuple[1],
+            bo_m3m3=parameters[0][i],
+            rs_m3m3=parameters[1][i],
+            pb_atma=parameters[2][i],
+        )
         points.append(point)
 
     return points

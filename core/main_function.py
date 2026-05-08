@@ -1,5 +1,6 @@
 from abc import ABC
 from typing import List, Tuple
+
 from ufpy.pvt import PVT
 
 
@@ -9,8 +10,8 @@ class Core(ABC):
 
     def calculation_parameter(self, flag: str) -> List[float]:
         """Расчет параметра при заданных температуре и давлении
-         :param flag: передача параметра для расчета
-         :return: возвращает список расчетных значений параметра
+        :param flag: передача параметра для расчета
+        :return: возвращает список расчетных значений параметра
         """
         parameter_data = []
         for data_tuple in self.tested_data:
@@ -35,15 +36,15 @@ class Core(ABC):
         :param t_c: температура заданная в цельсиях
         :return: объемный коэффициент нефти в м3/м3
         """
-        pass
+        ...
 
-    def calculation_rs_m3m3(self, p_atma: float, t_c: float) -> List[float]:
+    def calculation_rs_m3m3(self, p_atma: float, t_c: float) -> float:
         """Расчет газосодержания при заданных давлении и температуре
         :param p_atma: давление заданное в атмосферах
         :param t_c: температура заданная в цельсиях
         :return: газосодержание в м3/м3
         """
-        pass
+        ...
 
     def calculation_pb_atma(self, t_c: float, rsb: float = 1) -> float:
         """Расчет давления насыщения по известному газосодержанию при давлении насыщения и температуре
@@ -51,7 +52,7 @@ class Core(ABC):
         :param t_c: температура заданная в цельсиях
         :return: давление насыщения нефти в атм
         """
-        pass
+        ...
 
 
 class UfpyCore(Core):
@@ -63,7 +64,7 @@ class UfpyCore(Core):
         bo_m3m3 = self.fluid_as_ufpy.calc_bo_m3m3(p_atma=p_atma, t_C=t_c)
         return bo_m3m3
 
-    def calculation_rs_m3m3(self, p_atma: float, t_c: float) -> List[float]:
+    def calculation_rs_m3m3(self, p_atma: float, t_c: float) -> float:
         rs_m3m3 = self.fluid_as_ufpy.calc_rs_m3m3(p_atma=p_atma, t_C=t_c)
         return rs_m3m3
 
@@ -73,18 +74,21 @@ class UfpyCore(Core):
 
 
 class UniflocCore(Core):
-
     def __init__(self, fluid_as_unifloc, unifloc_api, tested_data: List[Tuple]):
         super().__init__(tested_data)
         self.fluid_as_unifloc = fluid_as_unifloc
         self.unifloc_api = unifloc_api
 
     def calculation_bo_m3m3(self, p_atma: float, t_c: float) -> float:
-        bo_m3m3 = self.unifloc_api.PVT_bo_m3m3(p_atma=p_atma, t_C=t_c, PVT_json=self.fluid_as_unifloc)
+        bo_m3m3 = self.unifloc_api.PVT_bo_m3m3(
+            p_atma=p_atma, t_C=t_c, PVT_json=self.fluid_as_unifloc
+        )
         return bo_m3m3
 
     def calculation_rs_m3m3(self, p_atma: float, t_c: float) -> float:
-        rs_m3m3 = self.unifloc_api.PVT_rs_m3m3(p_atma=p_atma, t_C=t_c, PVT_json=self.fluid_as_unifloc)
+        rs_m3m3 = self.unifloc_api.PVT_rs_m3m3(
+            p_atma=p_atma, t_C=t_c, PVT_json=self.fluid_as_unifloc
+        )
         return rs_m3m3
 
     def calculation_pb_atma(self, t_c: float, rsb: float = 1) -> float:
