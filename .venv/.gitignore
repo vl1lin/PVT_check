@@ -1,0 +1,15 @@
+# created by virtualenv automatically
+*.venv
+*.pyd
+*.fish
+*.bat
+*.ps1
+*.dll
+*.exe
+*.cfg
+*.pth
+pip-23.2.1.dist-info
+_virtualenv.py
+pip-23.2.1.virtualenv
+*.xml
+*.iml
