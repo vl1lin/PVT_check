@@ -1,6 +1,11 @@
-from configs.default import DefaultConfig, Config
+from classes.plot import Plot
+from configs.default import Config, DefaultConfig
 from core.main_function import UfpyCore, UniflocCore
-from core.technical_function import calculation_of_parameters, checking_calculations, creating_points
+from core.technical_function import (
+    calculation_of_parameters,
+    checking_calculations,
+    creating_points,
+)
 
 
 def main() -> None:
@@ -14,28 +19,46 @@ def main() -> None:
         t_res_c=90,
         bob_m3m3=100,
         muob_cp=5,
-        pvt_corr_set=0
+        pvt_corr_set=0,
     )
-    test_config = Config(name="fluid", data_fluid=test_data, data_for_test=data_for_test)
+    test_config = Config(
+        name="fluid", data_fluid=test_data, data_for_test=data_for_test
+    )
 
-    ufpy = UfpyCore(tested_data=test_config.tested_data, fluid_as_ufpy=test_config.fluid_as_ufpy)
-    unifloc = UniflocCore(tested_data=test_config.tested_data,
-                          fluid_as_unifloc=test_config.fluid_as_unifloc,
-                          unifloc_api=test_config.unifloc_api
-                          )
+    ufpy = UfpyCore(
+        tested_data=test_config.tested_data, fluid_as_ufpy=test_config.fluid_as_ufpy
+    )
+    unifloc = UniflocCore(
+        tested_data=test_config.tested_data,
+        fluid_as_unifloc=test_config.fluid_as_unifloc,
+        unifloc_api=test_config.unifloc_api,
+    )
 
     parameters_ufpy = calculation_of_parameters(ufpy)
     parameters_unifloc = calculation_of_parameters(unifloc)
 
-    points_ufpy = creating_points(testing_data=data_for_test, parameters=parameters_ufpy)
-    points_unifloc = creating_points(testing_data=data_for_test, parameters=parameters_unifloc)
+    points_ufpy = creating_points(
+        testing_data=data_for_test, parameters=parameters_ufpy
+    )
+    points_unifloc = creating_points(
+        testing_data=data_for_test, parameters=parameters_unifloc
+    )
 
-    success_bo = checking_calculations(ufpy_points=points_ufpy, unifloc_points=points_unifloc, flag="bo_m3m3")
-    success_rs = checking_calculations(ufpy_points=points_ufpy, unifloc_points=points_unifloc, flag="rs_m3m3")
-    success_pb = checking_calculations(ufpy_points=points_ufpy, unifloc_points=points_unifloc, flag="pb_atma")
+    success_bo = checking_calculations(
+        ufpy_points=points_ufpy, unifloc_points=points_unifloc, flag="bo_m3m3"
+    )
+    success_rs = checking_calculations(
+        ufpy_points=points_ufpy, unifloc_points=points_unifloc, flag="rs_m3m3"
+    )
+    success_pb = checking_calculations(
+        ufpy_points=points_ufpy, unifloc_points=points_unifloc, flag="pb_atma"
+    )
 
     print(success_pb and success_rs and success_bo)
 
+    plot = Plot(points_ufpy=points_ufpy, points_unifloc=points_unifloc)
+    plot.create_plot()
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     main()
