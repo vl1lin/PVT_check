@@ -36,7 +36,7 @@ def checking_calculations(
     if len(ufpy_points) != len(unifloc_points):
         raise ValueError
 
-    for i in range(0, len(ufpy_points) - 1):
+    for i in range(0, len(ufpy_points)):
         relative_fault = calculation_relative_fault(
             ufpy_points[i], unifloc_points[i], flag
         )
@@ -58,7 +58,7 @@ def calculation_relative_fault(
     :return: Относительная погрешность между рассчетами разных модулей
     """
     absolute_fault = getattr(ufpy_point, f"{flag}") - getattr(unifloc_point, f"{flag}")
-    relative_fault = absolute_fault / getattr(ufpy_point, f"{flag}") * 100
+    relative_fault = abs(absolute_fault / getattr(ufpy_point, f"{flag}") * 100)
     return relative_fault
 
     # if flag is "bo":
@@ -86,7 +86,7 @@ def creating_points(
     :return: список содержащий объекты класса Point
     """
     points = list()
-    for i in range(0, len(testing_data) - 1):
+    for i in range(0, len(testing_data)):
         current_PT_tuple = testing_data[i]
         point = Point(
             p_atma=current_PT_tuple[0],

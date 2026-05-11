@@ -1,4 +1,4 @@
-from classes.plot import Plot
+from classes.plot import PlotBo, PlotPb, PlotRs
 from configs.default import Config, DefaultConfig
 from core.main_function import UfpyCore, UniflocCore
 from core.technical_function import (
@@ -9,7 +9,15 @@ from core.technical_function import (
 
 
 def main() -> None:
-    data_for_test = [(2, 30), (3, 40)]
+    data_for_test = [
+        (2, 30),
+        (3, 40),
+        (2.5, 35),
+        (3.5, 45),
+        (4, 50),
+        (4.5, 55),
+        (5, 60),
+    ]
     test_data = DefaultConfig(
         gamma_gas=0.75,
         gamma_oil=0.86,
@@ -54,10 +62,19 @@ def main() -> None:
         ufpy_points=points_ufpy, unifloc_points=points_unifloc, flag="pb_atma"
     )
 
-    print(success_pb and success_rs and success_bo)
+    print(success_rs and success_bo)
+    # print(*(i.pb_atma for i in points_ufpy))
+    # print("-" * 50)
+    # print(*(i.pb_atma for i in points_unifloc))
 
-    plot = Plot(points_ufpy=points_ufpy, points_unifloc=points_unifloc)
-    plot.create_plot()
+    plot_bo = PlotBo(points_ufpy=points_ufpy, points_unifloc=points_unifloc)
+    plot_bo.create_subplot()
+
+    plot_rs = PlotRs(points_ufpy=points_ufpy, points_unifloc=points_unifloc)
+    plot_rs.create_subplot()
+
+    plot_pb = PlotPb(points_ufpy=points_ufpy, points_unifloc=points_unifloc)
+    plot_pb.create_subplot()
 
 
 if __name__ == "__main__":

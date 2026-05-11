@@ -36,11 +36,7 @@ class Plot:
         :return: Ничего не возвращает, только добавляет график
         """
 
-        self.ax.plot(
-            nums_for_x,
-            nums_for_y,
-            label=label,
-        )
+        self.ax.plot(nums_for_x, nums_for_y, label=label)
 
         self.ax.set_xlabel(xlabel)
         self.ax.set_ylabel(ylabel)
@@ -54,17 +50,17 @@ class Plot:
         :param frag: название параметра
         :return: список значений параметра
         """
-        parametr: List[float] = list()
+        parameter: List[float] = list()
         for point in points:
-            parametr.append(getattr(point, flag))
-        return parametr
+            parameter.append(getattr(point, flag))
+        return parameter
 
     def save_plot(self) -> None:
         pass
 
 
 class PlotBo(Plot):
-    def __init__(self, points_ufpy: list[Point], points_unifloc: List[Point]):
+    def __init__(self, points_ufpy: List[Point], points_unifloc: List[Point]):
         super().__init__(points_ufpy, points_unifloc)
 
     def create_subplot(self) -> None:
@@ -96,10 +92,11 @@ class PlotBo(Plot):
             xlabel="Pressure (atm)",
             ylabel="B_m3m3",
         )
+        plt.show()
 
 
 class PlotRs(Plot):
-    def __init__(self, points_ufpy: list[Point], points_unifloc: List[Point]):
+    def __init__(self, points_ufpy: List[Point], points_unifloc: List[Point]):
         super().__init__(points_ufpy, points_unifloc)
 
     def create_subplot(self) -> None:
@@ -132,9 +129,11 @@ class PlotRs(Plot):
             ylabel="Rs_m3m3",
         )
 
+        plt.show()
+
 
 class PlotPb(Plot):
-    def __init__(self, points_ufpy: list[Point], points_unifloc: List[Point]):
+    def __init__(self, points_ufpy: List[Point], points_unifloc: List[Point]):
         super().__init__(points_ufpy, points_unifloc)
 
     def create_subplot(self) -> None:
@@ -143,26 +142,27 @@ class PlotPb(Plot):
             self._points_ufpy, "p_atma"
         )
         ufpy_nums_for_y = self.getting_parameters_from_points(
-            self._points_ufpy, "pb_m3m3"
+            self._points_ufpy, "pb_atma"
         )
         self.create_plot(
             ufpy_nums_for_x,
             ufpy_nums_for_y,
             "UFPY",
             xlabel="Pressure (atm)",
-            ylabel="Pb_m3m3",
+            ylabel="Pb_atma",
         )
 
         unifloc_nums_for_x = self.getting_parameters_from_points(
             self._points_unifloc, "p_atma"
         )
         unifloc_nums_for_y = self.getting_parameters_from_points(
-            self._points_unifloc, "pb_m3m3"
+            self._points_unifloc, "pb_atma"
         )
         self.create_plot(
             unifloc_nums_for_x,
             unifloc_nums_for_y,
             "Unifloc",
             xlabel="Pressure (atm)",
-            ylabel="Pb_m3m3",
+            ylabel="Pb_atma",
         )
+        plt.show()
