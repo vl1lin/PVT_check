@@ -1,5 +1,6 @@
 from classes.plot import PlotBo, PlotPb, PlotRs
 from configs.default import Config, DefaultConfig
+from configs.generator_data import GeneratorPressure
 from core.main_function import UfpyCore, UniflocCore
 from core.technical_function import (
     calculation_of_parameters,
@@ -9,15 +10,7 @@ from core.technical_function import (
 
 
 def main() -> None:
-    data_for_test = [
-        (2, 30),
-        (3, 40),
-        (2.5, 35),
-        (3.5, 45),
-        (4, 50),
-        (4.5, 55),
-        (5, 60),
-    ]
+    data_for_test = GeneratorPressure().pipeline()
     test_data = DefaultConfig(
         gamma_gas=0.75,
         gamma_oil=0.86,
