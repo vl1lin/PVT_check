@@ -139,7 +139,7 @@ class PlotPb(Plot):
     def create_subplot(self) -> None:
 
         ufpy_nums_for_x = self.getting_parameters_from_points(
-            self._points_ufpy, "p_atma"
+            self._points_ufpy, "rs_m3m3"
         )
         ufpy_nums_for_y = self.getting_parameters_from_points(
             self._points_ufpy, "pb_atma"
@@ -148,12 +148,12 @@ class PlotPb(Plot):
             ufpy_nums_for_x,
             ufpy_nums_for_y,
             "UFPY",
-            xlabel="Pressure (atm)",
+            xlabel="Rs_m3m3",
             ylabel="Pb_atma",
         )
 
         unifloc_nums_for_x = self.getting_parameters_from_points(
-            self._points_unifloc, "p_atma"
+            self._points_unifloc, "rs_m3m3"
         )
         unifloc_nums_for_y = self.getting_parameters_from_points(
             self._points_unifloc, "pb_atma"
@@ -162,7 +162,7 @@ class PlotPb(Plot):
             unifloc_nums_for_x,
             unifloc_nums_for_y,
             "Unifloc",
-            xlabel="Pressure (atm)",
+            xlabel="Rs_m3m3",
             ylabel="Pb_atma",
         )
         plt.show()

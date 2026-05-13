@@ -60,11 +60,11 @@ def main() -> None:
     # print("-" * 50)
     # print(*(i.pb_atma for i in points_unifloc))
 
-    plot_bo = PlotBo(points_ufpy=points_ufpy, points_unifloc=points_unifloc)
-    plot_bo.create_subplot()
+    # plot_bo = PlotBo(points_ufpy=points_ufpy, points_unifloc=points_unifloc)
+    # plot_bo.create_subplot()
 
-    plot_rs = PlotRs(points_ufpy=points_ufpy, points_unifloc=points_unifloc)
-    plot_rs.create_subplot()
+    # plot_rs = PlotRs(points_ufpy=points_ufpy, points_unifloc=points_unifloc)
+    # plot_rs.create_subplot()
 
     plot_pb = PlotPb(points_ufpy=points_ufpy, points_unifloc=points_unifloc)
     plot_pb.create_subplot()

@@ -43,9 +43,9 @@ class GeneratorPressure(GeneratorDataForTest):
     def generate_case(
         self,
         pressure_min: float = 0.0,
-        pressure_max: float = 6.0,
+        pressure_max: float = 56.0,
         temperature: float = 80.0,
-        num_points: int = 100,
+        num_points: int = 1000,
     ) -> None:
         """
         Функция генерирует список кортежей для рассчета зависимостей от давления
