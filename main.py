@@ -2,11 +2,7 @@ from classes.plot import PlotBo, PlotPb, PlotRs
 from configs.default import Config, DefaultConfig
 from configs.generator_data import GeneratorPressure
 from core.main_function import UfpyCore, UniflocCore
-from core.technical_function import (
-    calculation_of_parameters,
-    checking_calculations,
-    creating_points,
-)
+from core.technical_function import checking_calculations
 
 
 def main() -> None:
@@ -35,38 +31,22 @@ def main() -> None:
         unifloc_api=test_config.unifloc_api,
     )
 
-    parameters_ufpy = calculation_of_parameters(ufpy)
-    parameters_unifloc = calculation_of_parameters(unifloc)
+    ufpy.pipeline()
+    unifloc.pipeline()
 
-    points_ufpy = creating_points(
-        testing_data=data_for_test, parameters=parameters_ufpy
-    )
-    points_unifloc = creating_points(
-        testing_data=data_for_test, parameters=parameters_unifloc
-    )
+    success_bo = checking_calculations(ufpy.points, unifloc.points, "bo_m3m3")
+    success_rs = checking_calculations(ufpy.points, unifloc.points, "rs_m3m3")
+    success_pb = checking_calculations(ufpy.points, unifloc.points, "pb_atma")
 
-    success_bo = checking_calculations(
-        ufpy_points=points_ufpy, unifloc_points=points_unifloc, flag="bo_m3m3"
-    )
-    success_rs = checking_calculations(
-        ufpy_points=points_ufpy, unifloc_points=points_unifloc, flag="rs_m3m3"
-    )
-    success_pb = checking_calculations(
-        ufpy_points=points_ufpy, unifloc_points=points_unifloc, flag="pb_atma"
-    )
+    print(f"Удволетворимость рассчета bo: {success_bo}")
+    print(f"Удволетворимость рассчета rs: {success_rs}")
+    print(f"Удволетворимость рассчета pb: {success_pb}")
 
-    print(success_rs and success_bo)
-    # print(*(i.pb_atma for i in points_ufpy))
-    # print("-" * 50)
-    # print(*(i.pb_atma for i in points_unifloc))
-
-    # plot_bo = PlotBo(points_ufpy=points_ufpy, points_unifloc=points_unifloc)
-    # plot_bo.create_subplot()
-
-    # plot_rs = PlotRs(points_ufpy=points_ufpy, points_unifloc=points_unifloc)
-    # plot_rs.create_subplot()
-
-    plot_pb = PlotPb(points_ufpy=points_ufpy, points_unifloc=points_unifloc)
+    plot_bo = PlotBo(ufpy.points, unifloc.points)
+    plot_bo.create_subplot()
+    plot_rs = PlotRs(ufpy.points, unifloc.points)
+    plot_rs.create_subplot()
+    plot_pb = PlotPb(ufpy.points, unifloc.points)
     plot_pb.create_subplot()
 
 
