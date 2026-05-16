@@ -35,7 +35,8 @@ class Plot:
         :param ylabel: название оси Y
         :return: Ничего не возвращает, только добавляет график
         """
-
+        if len(nums_for_x) == 0 or len(nums_for_y) == 0:
+            raise ValueError("nums_for_x and nums_for_y must not be empty")
         self.ax.plot(nums_for_x, nums_for_y, label=label)
 
         self.ax.set_xlabel(xlabel)
@@ -47,12 +48,14 @@ class Plot:
         """
         Метод получает из списка точек значение указанного параметра
         :param points: список точек
-        :param frag: название параметра
+        :param flag: название параметра
         :return: список значений параметра
         """
         parameter: List[float] = list()
         for point in points:
             parameter.append(getattr(point, flag))
+        if 0 in parameter:
+            raise ValueError("parameter must not contain zero")
         return parameter
 
     def save_plot(self) -> None:
@@ -83,7 +86,7 @@ class PlotBo(Plot):
             self._points_unifloc, "p_atma"
         )
         unifloc_nums_for_y = self.getting_parameters_from_points(
-            self._points_unifloc, "bo_m3m3"
+            self._points_unifloc, "unifloc_bo_m3m3"
         )
         self.create_plot(
             unifloc_nums_for_x,
@@ -119,7 +122,7 @@ class PlotRs(Plot):
             self._points_unifloc, "p_atma"
         )
         unifloc_nums_for_y = self.getting_parameters_from_points(
-            self._points_unifloc, "rs_m3m3"
+            self._points_unifloc, "unifloc_rs_m3m3"
         )
         self.create_plot(
             unifloc_nums_for_x,
@@ -139,30 +142,32 @@ class PlotPb(Plot):
     def create_subplot(self) -> None:
 
         ufpy_nums_for_x = self.getting_parameters_from_points(
-            self._points_ufpy, "rs_m3m3"
+            self._points_ufpy, "rsb_m3m3"
         )
+        print(ufpy_nums_for_x)
         ufpy_nums_for_y = self.getting_parameters_from_points(
             self._points_ufpy, "pb_atma"
         )
+        print(ufpy_nums_for_y)
         self.create_plot(
             ufpy_nums_for_x,
             ufpy_nums_for_y,
             "UFPY",
-            xlabel="Rs_m3m3",
+            xlabel="Rsb_m3m3",
             ylabel="Pb_atma",
         )
 
         unifloc_nums_for_x = self.getting_parameters_from_points(
-            self._points_unifloc, "rs_m3m3"
+            self._points_unifloc, "unifloc_rsb_m3m3"
         )
         unifloc_nums_for_y = self.getting_parameters_from_points(
-            self._points_unifloc, "pb_atma"
+            self._points_unifloc, "unifloc_pb_atma"
         )
         self.create_plot(
             unifloc_nums_for_x,
             unifloc_nums_for_y,
             "Unifloc",
-            xlabel="Rs_m3m3",
+            xlabel="Rsb_m3m3",
             ylabel="Pb_atma",
         )
         plt.show()

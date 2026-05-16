@@ -1,26 +1,6 @@
-from typing import List, Tuple
+from typing import List
 
 from classes.point import Point
-from core.main_function import Core
-
-
-def calculation_of_parameters(
-    module: Core,
-) -> Tuple[List[float], List[float], List[float]]:
-    """
-    Данная функция вызывает рассчет параметров с помощью реализаций юнифлок или юфпи
-    :param module: объект класса UfpyCore или UniflocCore позволяющий произвести рассчет параметров
-    :return: Кортеж списков рассчитанных параметров
-    """
-    if isinstance(module, Core):
-        bo_m3m3 = module.calculation_parameter("bo")
-        rs_m3m3 = module.calculation_parameter("rs")
-        pb_atma = module.calculation_parameter("pb")
-
-    else:
-        raise TypeError
-
-    return bo_m3m3, rs_m3m3, pb_atma
 
 
 def checking_calculations(
@@ -34,14 +14,14 @@ def checking_calculations(
     :return: Булевая переменную обозначающая удволетворимость погрешности рассчета
     """
     if len(ufpy_points) != len(unifloc_points):
-        raise ValueError
+        raise ValueError("Списки точек должны быть одинаковой длины")
 
     for i in range(0, len(ufpy_points)):
         relative_fault = calculation_relative_fault(
             ufpy_points[i], unifloc_points[i], flag
         )
         if relative_fault > 5:
-            print()
+            print(f"Погрешность рассчета превышает допустимый порог в 5% на точке {i}")
             return False
 
     return True
@@ -57,44 +37,8 @@ def calculation_relative_fault(
     :param flag: Точное название атрибута в классе Point
     :return: Относительная погрешность между рассчетами разных модулей
     """
-    absolute_fault = getattr(ufpy_point, f"{flag}") - getattr(unifloc_point, f"{flag}")
+    absolute_fault = getattr(ufpy_point, f"{flag}") - getattr(
+        unifloc_point, f"unifloc_{flag}"
+    )
     relative_fault = abs(absolute_fault / getattr(ufpy_point, f"{flag}") * 100)
     return relative_fault
-
-    # if flag is "bo":
-    #     absolute_fault = ufpy_point.bo_m3m3 - unifloc_point.bo_m3m3
-    #
-    # elif flag is "rs":
-    #     absolute_fault = ufpy_point.rs_m3m3 - unifloc_point.rs_m3m3
-    #
-    # elif flag is "pb":
-    #     absolute_fault = ufpy_point.pb_atma - unifloc_point.pb_atma
-    #
-    # else:
-    #     raise ValueError
-    #
-    # return absolute_fault
-
-
-def creating_points(
-    testing_data: List[Tuple], parameters: Tuple[List[float], ...]
-) -> List[Point]:
-    """
-    Создание списка объектов класса Point
-    :param testing_data: Список с кортежами исходных давлений и температур
-    :param parameters: Кортеж со списками значений для параметров рассчитанных модулем
-    :return: список содержащий объекты класса Point
-    """
-    points = list()
-    for i in range(0, len(testing_data)):
-        current_PT_tuple = testing_data[i]
-        point = Point(
-            p_atma=current_PT_tuple[0],
-            t_c=current_PT_tuple[1],
-            bo_m3m3=parameters[0][i],
-            rs_m3m3=parameters[1][i],
-            pb_atma=parameters[2][i],
-        )
-        points.append(point)
-
-    return points
