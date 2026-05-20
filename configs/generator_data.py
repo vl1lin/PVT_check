@@ -1,84 +1,94 @@
-from typing import List, Tuple
+from abc import ABC, abstractmethod
+from dataclasses import fields
+from typing import List
 
 import numpy as np
 
+from classes.point import Point
+from configs.default import DefaultConfig
 
-class GeneratorDataForTest:
-    def __init__(self):
-        self.pressure: List[float] | np.ndarray
-        self.temperature: List[float] | np.ndarray
 
-    def pipeline(self) -> List[Tuple]:
+class GeneratorDataForTest(ABC):
+    def __init__(self, data_config: DefaultConfig, constant_parameter: float):
+        self.data_config: DefaultConfig = data_config
+        self.constant_parameter: float = constant_parameter
+        self.points: List[Point] = list()
+
+    def pipeline(self, min: float, max: float, count_of_points: int) -> List[Point]:
         """
         Основной метод для генерации данных
-        :return: список кортежей (давление, температура)
+        :param min: минимальное значение параметра
+        :param max: максимальное значение параметра
+        :param count_of_points: количество точек
+        :return: список объектов класса Point
         """
-        self.generate_case()
-        return self.wrapping_in_tuple()
+        changeable_parameter = self.generate_case(min, max, count_of_points)
+        general_data = self.getting_data_from_config()
+        for value in changeable_parameter:
+            point = Point(**general_data)
+            self.add_changeable_and_constant_parameters(value, point)
+            self.points.append(point)
+        return self.points
 
-    def generate_case(self) -> None:
+    def getting_data_from_config(self) -> dict[str, float]:
         """
-        Функция генерирует список кортежей для рассчета зависимостей
-        Данные сохраняются в атрибуты класса
-        :return: None
+        Функция создает словарь данных из конфигурационного класса
+        :return: словарь данных dict[str, float]
         """
-        pass
+        data_from_config: dict[str, float] = {}
+        for i in fields(self.data_config):
+            if i.name == "pvt_corr_set":
+                continue
+            value = getattr(self.data_config, i.name)
+            data_from_config[i.name] = value
+        return data_from_config
 
-    def wrapping_in_tuple(self) -> List[Tuple]:
+    @abstractmethod
+    def add_changeable_and_constant_parameters(
+        self, changeable_parameter: float, point: Point
+    ) -> None:
         """
-        Функция оборачивает данные в кортежи
-        Работа производится с атрибутами класса, поэтому функция не принимает параметров
-        :return: список кортежей (давление, температура)
+        Функция добавляет изменяемый параметр к точке
+        :param changeable_parameter: изменяемый параметр
+        :param constant_parameter: постоянный параметр
+        :param point: объект Point
         """
-        wrapped_tuples: List[Tuple] = list()
-        for pressure, temperature in zip(self.pressure, self.temperature):
-            wrapped_tuples.append((pressure, temperature))
-        return wrapped_tuples
+        ...
+
+    @abstractmethod
+    def generate_case(self, min: float, max: float, count_of_points: int) -> np.ndarray:
+        """
+        Функция генерирует список для изменяемого параметра объекта Point
+        :param min: минимальное значение параметра
+        :param max: максимальное значение параметра
+        :param count_of_points: количество точек
+        :return: массив numpy (ndarray)
+        """
+        ...
 
 
 class GeneratorPressure(GeneratorDataForTest):
-    def __init__(self):
-        super().__init__()
+    def __init__(self, data_config: DefaultConfig, constant_parameter: float):
+        super().__init__(data_config, constant_parameter)
 
-    def generate_case(
-        self,
-        pressure_min: float = 1.0,
-        pressure_max: float = 56.0,
-        temperature: float = 80.0,
-        num_points: int = 100,
+    def generate_case(self, min: float, max: float, count_of_points: int) -> np.ndarray:
+        """
+        Функция генерирует список для давления
+        :param min: минимальное значение параметра
+        :param max: максимальное значение параметра
+        :param count_of_points: количество точек
+        :return: массив numpy (ndarray)
+        """
+        pressure = np.linspace(min, max, count_of_points)
+        return pressure
+
+    def add_changeable_and_constant_parameters(
+        self, changeable_parameter: float, point: Point
     ) -> None:
         """
-        Функция генерирует список кортежей для рассчета зависимостей от давления
-        Температура принимается величиной постоянным
-        :param pressure_min: минимальное давление
-        :param pressure_max: максимальное давление
-        :param temperature: температура
-        :param num_points: количество точек
-        :return: None
+        Функция добавляет изменяемый парметр (давление) и постоянный параметр (температуру) к точке
+        :param changeable_parameter: изменяемый параметр
+        :param point: объект Point
         """
-        self.pressure = np.linspace(pressure_min, pressure_max, num_points)
-        self.temperature = [temperature for _ in range(len(self.pressure))]
-
-
-class GeneratorTemperature(GeneratorDataForTest):
-    def __init__(self):
-        super().__init__()
-
-    def generate_case(
-        self,
-        temperature_min: float = 80.0,
-        temperature_max: float = 100.0,
-        pressure: float = 4.0,
-        num_points: int = 100,
-    ) -> None:
-        """
-        Функция генерирует список кортежей для рассчета зависимостей от температуры
-        Давление принимается величиной постоянным
-        :param temperature_min: минимальная температура
-        :param temperature_max: максимальная температура
-        :param pressure: давление
-        :param num_points: количество точек
-        :return: None
-        """
-        self.temperature = np.linspace(temperature_min, temperature_max, num_points)
-        self.pressure = [pressure for _ in range(len(self.temperature))]
+        point.p_atma = changeable_parameter
+        point.t_c = self.constant_parameter

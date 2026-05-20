@@ -1,34 +1,32 @@
 from classes.plot import PlotBo, PlotPb, PlotRs
-from configs.default import Config, DefaultConfig
+from configs.default import DefaultConfig
 from configs.generator_data import GeneratorPressure
 from core.main_function import UfpyCore, UniflocCore
 from core.technical_function import checking_calculations
 
 
 def main() -> None:
-    data_for_test = GeneratorPressure().pipeline()
     test_data = DefaultConfig(
         gamma_gas=0.75,
         gamma_oil=0.86,
         gamma_wat=1,
         rsb_m3m3=120,
         pb_atma=10,
-        t_res_c=90,
+        t_res_C=90,
         bob_m3m3=100,
-        muob_cp=5,
+        muob_cP=5,
         pvt_corr_set=0,
     )
-    test_config = Config(
-        name="fluid", data_fluid=test_data, data_for_test=data_for_test
-    )
 
-    ufpy = UfpyCore(
-        tested_data=test_config.tested_data, fluid_as_ufpy=test_config.fluid_as_ufpy
-    )
+    t_c = 80
+    main_object = GeneratorPressure(test_data, t_c)
+    points = main_object.pipeline(min=0, max=100, count_of_points=2)
+
+    ufpy = UfpyCore(points)
     unifloc = UniflocCore(
-        tested_data=test_config.tested_data,
-        fluid_as_unifloc=test_config.fluid_as_unifloc,
-        unifloc_api=test_config.unifloc_api,
+        points=points,
+        fluid_as_unifloc=test_data.initiate_unifloc(),
+        unifloc_api=test_data.initiate_unifloc_api(),
     )
 
     ufpy.pipeline()

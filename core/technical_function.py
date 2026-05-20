@@ -37,8 +37,6 @@ def calculation_relative_fault(
     :param flag: Точное название атрибута в классе Point
     :return: Относительная погрешность между рассчетами разных модулей
     """
-    absolute_fault = getattr(ufpy_point, f"{flag}") - getattr(
-        unifloc_point, f"unifloc_{flag}"
-    )
+    absolute_fault = getattr(ufpy_point, f"{flag}") - getattr(unifloc_point, f"{flag}")
     relative_fault = abs(absolute_fault / getattr(ufpy_point, f"{flag}") * 100)
     return relative_fault

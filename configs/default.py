@@ -1,8 +1,5 @@
 import sys
 from dataclasses import dataclass
-from typing import List, Tuple
-
-from ufpy.pvt import PVT
 
 unifloc_path = r"C:\unifloc_vba-master"
 unifloc_vba = unifloc_path + r"\UniflocVBA_7.xlam"
@@ -17,24 +14,10 @@ class DefaultConfig:
     gamma_wat: float
     rsb_m3m3: float
     pb_atma: float
-    t_res_c: float
+    t_res_C: float
     bob_m3m3: float
-    muob_cp: float
+    muob_cP: float
     pvt_corr_set: float
-
-    def initiate_pvt(self) -> PVT:
-        pvt = PVT()
-        pvt.init(
-            gamma_gas=self.gamma_gas,
-            gamma_oil=self.gamma_oil,
-            gamma_wat=self.gamma_wat,
-            rsb_m3m3=self.rsb_m3m3,
-            pb_atma=self.pb_atma,
-            bob_m3m3=self.bob_m3m3,
-            muob_cP=self.muob_cp,
-            t_res_C=self.t_res_c,
-        )
-        return pvt
 
     @staticmethod
     def initiate_unifloc_api():
@@ -48,20 +31,9 @@ class DefaultConfig:
             gamma_wat=self.gamma_wat,
             rsb_m3m3=self.rsb_m3m3,
             pb_atma=self.pb_atma,
-            t_res_C=self.t_res_c,
+            t_res_C=self.t_res_C,
             bob_m3m3=self.bob_m3m3,
-            muob_cP=self.muob_cp,
+            muob_cP=self.muob_cP,
             PVT_corr_set=self.pvt_corr_set,
         )
         return fluid
-
-
-class Config:
-    def __init__(
-        self, name: str, data_fluid: DefaultConfig, data_for_test: List[Tuple]
-    ):
-        self._name = name
-        self.tested_data: List[Tuple] = data_for_test
-        self.fluid_as_ufpy: PVT = data_fluid.initiate_pvt()
-        self.unifloc_api = data_fluid.initiate_unifloc_api()
-        self.fluid_as_unifloc = data_fluid.initiate_unifloc()
