@@ -1,16 +1,20 @@
 from abc import ABC, abstractmethod
 from dataclasses import fields
 from typing import List, Tuple
-from configs.exceptions import InvalidTupe
 
 import numpy as np
 
 from classes.point import Point
 from configs.default import DefaultConfig
+from configs.exceptions import InvalidTupe
 
 
 class GeneratorDataForTest(ABC):
-    def __init__(self, data_config: DefaultConfig, constant_parameter: float | Tuple[float, float]):
+    def __init__(
+        self,
+        data_config: DefaultConfig,
+        constant_parameter: float | Tuple[float, float],
+    ):
         self.data_config: DefaultConfig = data_config
         self.constant_parameter: float | Tuple[float, float] = constant_parameter
         self.points: List[Point] = list()
@@ -99,19 +103,23 @@ class GeneratorPressure(GeneratorDataForTest):
                 raise InvalidTupe("Нерпавильный тип для постоянного параметра")
         except InvalidTupe:
             print("Будет взят первый элемент кортежа")
-            point.t_c = self.constant_parameter[0] if isinstance(self.constant_parameter, Tuple)
-
+            if isinstance(self.constant_parameter, Tuple):
+                self.t_c: float | tuple[float, float]
 
 
 class GeneratorRSB(GeneratorDataForTest):
-    def __init__(self, data_config: DefaultConfig, constant_parameter: Tuple[float, float]):
+    def __init__(
+        self, data_config: DefaultConfig, constant_parameter: Tuple[float, float]
+    ):
         super().__init__(data_config, constant_parameter)
 
-    def generate_case(self, min: float, max:float, count_of_points: int) -> np.ndarray:
+    def generate_case(self, min: float, max: float, count_of_points: int) -> np.ndarray:
         rsb = np.linspace(min, max, count_of_points)
         return rsb
 
-    def add_changeable_and_constant_parameters(self, changeable_parameter: float, point: Point) -> None:
+    def add_changeable_and_constant_parameters(
+        self, changeable_parameter: float, point: Point
+    ) -> None:
         point.rsb_m3m3 = changeable_parameter
         if isinstance(self.constant_parameter, Tuple):
             point.p_atma, point.t_c = self.constant_parameter

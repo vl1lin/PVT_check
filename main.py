@@ -23,7 +23,7 @@ def main() -> None:
     # main_object = GeneratorPressure(test_data, t_c)
     main_object = GeneratorRSB(test_data, (p_atma, t_c))
     # points = main_object.pipeline(min=1, max=100, count_of_points=2)
-    points = main_object.pipeline(min=1, max=50, count_of_points=2)
+    points = main_object.pipeline(min=1, max=50, count_of_points=100)
 
     ufpy = UfpyCore(points)
     unifloc = UniflocCore(
@@ -44,13 +44,13 @@ def main() -> None:
     # print(f"Удволетворимость рассчета pb: {success_pb}")
 
     for i, k in zip(ufpy.points, unifloc.points):
-        print(i.p_atma)
-        print(k.p_atma)
+        print(i.rsb_m3m3, i.pb_atma)
+        print(k.rsb_m3m3, k.pb_atma)
 
-    plot_bo = PlotBo(ufpy.points, unifloc.points)
-    plot_bo.create_subplot()
-    plot_rs = PlotRs(ufpy.points, unifloc.points)
-    plot_rs.create_subplot()
+    # plot_bo = PlotBo(ufpy.points, unifloc.points)
+    # plot_bo.create_subplot()
+    # plot_rs = PlotRs(ufpy.points, unifloc.points)
+    # plot_rs.create_subplot()
     plot_pb = PlotPb(ufpy.points, unifloc.points)
     plot_pb.create_subplot()
 

@@ -144,11 +144,11 @@ class PlotPb(Plot):
         ufpy_nums_for_x = self.getting_parameters_from_points(
             self._points_ufpy, "rsb_m3m3"
         )
-        print(ufpy_nums_for_x)
+        # print(ufpy_nums_for_x)
         ufpy_nums_for_y = self.getting_parameters_from_points(
             self._points_ufpy, "pb_atma"
         )
-        print(ufpy_nums_for_y)
+        # print(ufpy_nums_for_y)
         self.create_plot(
             ufpy_nums_for_x,
             ufpy_nums_for_y,
