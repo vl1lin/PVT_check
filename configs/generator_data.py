@@ -1,6 +1,7 @@
 from abc import ABC, abstractmethod
 from dataclasses import fields
-from typing import List
+from typing import List, Tuple
+from configs.exceptions import InvalidTupe
 
 import numpy as np
 
@@ -9,9 +10,9 @@ from configs.default import DefaultConfig
 
 
 class GeneratorDataForTest(ABC):
-    def __init__(self, data_config: DefaultConfig, constant_parameter: float):
+    def __init__(self, data_config: DefaultConfig, constant_parameter: float | Tuple[float, float]):
         self.data_config: DefaultConfig = data_config
-        self.constant_parameter: float = constant_parameter
+        self.constant_parameter: float | Tuple[float, float] = constant_parameter
         self.points: List[Point] = list()
 
     def pipeline(self, min: float, max: float, count_of_points: int) -> List[Point]:
@@ -90,5 +91,29 @@ class GeneratorPressure(GeneratorDataForTest):
         :param changeable_parameter: изменяемый параметр
         :param point: объект Point
         """
-        point.p_atma = changeable_parameter
-        point.t_c = self.constant_parameter
+        try:
+            point.p_atma = changeable_parameter
+            if isinstance(self.constant_parameter, float):
+                point.t_c = self.constant_parameter
+            else:
+                raise InvalidTupe("Нерпавильный тип для постоянного параметра")
+        except InvalidTupe:
+            print("Будет взят первый элемент кортежа")
+            point.t_c = self.constant_parameter[0] if isinstance(self.constant_parameter, Tuple)
+
+
+
+class GeneratorRSB(GeneratorDataForTest):
+    def __init__(self, data_config: DefaultConfig, constant_parameter: Tuple[float, float]):
+        super().__init__(data_config, constant_parameter)
+
+    def generate_case(self, min: float, max:float, count_of_points: int) -> np.ndarray:
+        rsb = np.linspace(min, max, count_of_points)
+        return rsb
+
+    def add_changeable_and_constant_parameters(self, changeable_parameter: float, point: Point) -> None:
+        point.rsb_m3m3 = changeable_parameter
+        if isinstance(self.constant_parameter, Tuple):
+            point.p_atma, point.t_c = self.constant_parameter
+        else:
+            raise InvalidTupe("Неправильный тип данных для постоянного параметра")

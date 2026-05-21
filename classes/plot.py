@@ -86,7 +86,7 @@ class PlotBo(Plot):
             self._points_unifloc, "p_atma"
         )
         unifloc_nums_for_y = self.getting_parameters_from_points(
-            self._points_unifloc, "unifloc_bo_m3m3"
+            self._points_unifloc, "bo_m3m3"
         )
         self.create_plot(
             unifloc_nums_for_x,
@@ -122,7 +122,7 @@ class PlotRs(Plot):
             self._points_unifloc, "p_atma"
         )
         unifloc_nums_for_y = self.getting_parameters_from_points(
-            self._points_unifloc, "unifloc_rs_m3m3"
+            self._points_unifloc, "rs_m3m3"
         )
         self.create_plot(
             unifloc_nums_for_x,
@@ -158,10 +158,10 @@ class PlotPb(Plot):
         )
 
         unifloc_nums_for_x = self.getting_parameters_from_points(
-            self._points_unifloc, "unifloc_rsb_m3m3"
+            self._points_unifloc, "rsb_m3m3"
         )
         unifloc_nums_for_y = self.getting_parameters_from_points(
-            self._points_unifloc, "unifloc_pb_atma"
+            self._points_unifloc, "pb_atma"
         )
         self.create_plot(
             unifloc_nums_for_x,

@@ -75,5 +75,4 @@ class UniflocCore(Core):
             p_atma=point.p_atma, t_C=point.t_c, PVT_json=self.fluid_as_unifloc
         )
         parameters = self.unifloc_api.decode_json(json=fluid)
-        print(parameters)
         return parameters

@@ -1,6 +1,6 @@
 from classes.plot import PlotBo, PlotPb, PlotRs
 from configs.default import DefaultConfig
-from configs.generator_data import GeneratorPressure
+from configs.generator_data import GeneratorPressure, GeneratorRSB
 from core.main_function import UfpyCore, UniflocCore
 from core.technical_function import checking_calculations
 
@@ -19,8 +19,11 @@ def main() -> None:
     )
 
     t_c = 80
-    main_object = GeneratorPressure(test_data, t_c)
-    points = main_object.pipeline(min=0, max=100, count_of_points=2)
+    p_atma = 50
+    # main_object = GeneratorPressure(test_data, t_c)
+    main_object = GeneratorRSB(test_data, (p_atma, t_c))
+    # points = main_object.pipeline(min=1, max=100, count_of_points=2)
+    points = main_object.pipeline(min=1, max=50, count_of_points=2)
 
     ufpy = UfpyCore(points)
     unifloc = UniflocCore(
@@ -32,13 +35,17 @@ def main() -> None:
     ufpy.pipeline()
     unifloc.pipeline()
 
-    success_bo = checking_calculations(ufpy.points, unifloc.points, "bo_m3m3")
-    success_rs = checking_calculations(ufpy.points, unifloc.points, "rs_m3m3")
-    success_pb = checking_calculations(ufpy.points, unifloc.points, "pb_atma")
+    # success_bo = checking_calculations(ufpy.points, unifloc.points, "bo_m3m3")
+    # success_rs = checking_calculations(ufpy.points, unifloc.points, "rs_m3m3")
+    # success_pb = checking_calculations(ufpy.points, unifloc.points, "pb_atma")
 
-    print(f"Удволетворимость рассчета bo: {success_bo}")
-    print(f"Удволетворимость рассчета rs: {success_rs}")
-    print(f"Удволетворимость рассчета pb: {success_pb}")
+    # print(f"Удволетворимость рассчета bo: {success_bo}")
+    # print(f"Удволетворимость рассчета rs: {success_rs}")
+    # print(f"Удволетворимость рассчета pb: {success_pb}")
+
+    for i, k in zip(ufpy.points, unifloc.points):
+        print(i.p_atma)
+        print(k.p_atma)
 
     plot_bo = PlotBo(ufpy.points, unifloc.points)
     plot_bo.create_subplot()
