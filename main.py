@@ -37,11 +37,11 @@ def main() -> None:
 
     # success_bo = checking_calculations(ufpy.points, unifloc.points, "bo_m3m3")
     # success_rs = checking_calculations(ufpy.points, unifloc.points, "rs_m3m3")
-    # success_pb = checking_calculations(ufpy.points, unifloc.points, "pb_atma")
+    success_pb = checking_calculations(ufpy.points, unifloc.points, "pb_atma")
 
     # print(f"Удволетворимость рассчета bo: {success_bo}")
     # print(f"Удволетворимость рассчета rs: {success_rs}")
-    # print(f"Удволетворимость рассчета pb: {success_pb}")
+    print(f"Удволетворимость рассчета pb: {success_pb}")
 
     for i, k in zip(ufpy.points, unifloc.points):
         print(i.rsb_m3m3, i.pb_atma)
