@@ -23,7 +23,7 @@ def main() -> None:
     # main_object = GeneratorPressure(test_data, t_c)
     main_object = GeneratorRSB(test_data, (p_atma, t_c))
     # points = main_object.pipeline(min=1, max=100, count_of_points=2)
-    points = main_object.pipeline(min=1, max=50, count_of_points=100)
+    points = main_object.pipeline(min=100, max=500, count_of_points=100)
 
     ufpy = UfpyCore(points)
     unifloc = UniflocCore(
