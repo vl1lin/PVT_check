@@ -6,13 +6,15 @@ from typing import Optional
 import numpy as np
 
 from configs.default import DefaultConfig
-
+import python_api as unifloc
+import unfpy as unf
 
 class Manager:
     def __init__(self):
         self._data: Optional[DefaultConfig] = None
         self._p_atma: np.ndarray | float
         self._t_c: np.ndarray | float
+        self.pvt = unf.PVT()
         self._rs_m3m3: np.ndarray
         self._bo_m3m3: np.ndarray
         self._pb_atma: np.ndarray
@@ -67,13 +69,15 @@ class Manager:
     @rs_m3m3.setter
     def rs_m3m3(
         self,
+        p_atma: np.ndarray | float,
+        t_c: np.ndarray | float,
     ):
         """
         Устанавливает массив rs_m3m3
         :param value: Итерируемый объект, содержащий значения rs_m3m3
         """
-        if not isinstance(value, Iterable):
-            self._rs_m3m3 = value
+        if isinstance(p_atma, Iterable) or isinstance(t_c, Iterable):
+            self._rs_m3m3 =
         else:
             self._rs_m3m3 = np.array(value)
 
