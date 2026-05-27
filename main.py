@@ -1,12 +1,10 @@
-from classes.plot import PlotBo, PlotPb, PlotRs
 from configs.default import DefaultConfig
 from configs.generator_data import GeneratorPressure, GeneratorRSB
-from core.main_function import UfpyCore, UniflocCore
-from core.technical_function import checking_calculations
+from core.runner import ComparisonRunner
 
 
 def main() -> None:
-    test_data = DefaultConfig(
+    config = DefaultConfig(
         gamma_gas=0.75,
         gamma_oil=0.86,
         gamma_wat=1,
@@ -18,41 +16,33 @@ def main() -> None:
         pvt_corr_set=0,
     )
 
-    t_c = 80
-    p_atma = 50
-    # main_object = GeneratorPressure(test_data, t_c)
-    main_object = GeneratorRSB(test_data, (p_atma, t_c))
-    # points = main_object.pipeline(min=1, max=100, count_of_points=2)
-    points = main_object.pipeline(min=100, max=500, count_of_points=100)
+    runner = ComparisonRunner(config)
 
-    ufpy = UfpyCore(points)
-    unifloc = UniflocCore(
-        points=points,
-        fluid_as_unifloc=test_data.initiate_unifloc(),
-        unifloc_api=test_data.initiate_unifloc_api(),
+    # Сценарий 1: варьируем газосодержание при насыщении (rsb) при фиксированных p=50 атм, t=80°C
+    gen_rsb = GeneratorRSB(config, constant_parameter=(50.0, 80.0))
+    runner.run(
+        generator=gen_rsb,
+        min_val=100,
+        max_val=500,
+        n_points=100,
+        x_parameter="rsb_m3m3",
+        x_label="Газосодержание при давлении насыщения, м³/м³",
+        plot_title="Сравнение unfpy vs unifloc — варьирование Rsb",
+        save_path="comparison_rsb.png",
     )
 
-    ufpy.pipeline()
-    unifloc.pipeline()
-
-    # success_bo = checking_calculations(ufpy.points, unifloc.points, "bo_m3m3")
-    # success_rs = checking_calculations(ufpy.points, unifloc.points, "rs_m3m3")
-    success_pb = checking_calculations(ufpy.points, unifloc.points, "pb_atma")
-
-    # print(f"Удволетворимость рассчета bo: {success_bo}")
-    # print(f"Удволетворимость рассчета rs: {success_rs}")
-    print(f"Удволетворимость рассчета pb: {success_pb}")
-
-    for i, k in zip(ufpy.points, unifloc.points):
-        print(i.rsb_m3m3, i.pb_atma)
-        print(k.rsb_m3m3, k.pb_atma)
-
-    # plot_bo = PlotBo(ufpy.points, unifloc.points)
-    # plot_bo.create_subplot()
-    # plot_rs = PlotRs(ufpy.points, unifloc.points)
-    # plot_rs.create_subplot()
-    plot_pb = PlotPb(ufpy.points, unifloc.points)
-    plot_pb.create_subplot()
+    # Сценарий 2: варьируем давление при фиксированных rsb=120 м³/м³, t=80°C
+    gen_p = GeneratorPressure(config, constant_parameter=80.0)
+    runner.run(
+        generator=gen_p,
+        min_val=10,
+        max_val=200,
+        n_points=100,
+        x_parameter="p_atma",
+        x_label="Давление, атм",
+        plot_title="Сравнение unfpy vs unifloc — варьирование давления",
+        save_path="comparison_pressure.png",
+    )
 
 
 if __name__ == "__main__":
