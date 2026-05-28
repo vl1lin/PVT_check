@@ -1,7 +1,12 @@
+import matplotlib
 import numpy as np
 import pytest
 
+matplotlib.use("Agg")
+
+from core.compare_core import CompareCore
 from data.config_data import Data
+from data.pvt_data import PVTData
 
 
 @pytest.fixture
@@ -13,6 +18,33 @@ def base_pvt():
         PVT_corr_set=0,
     )
     return data
+
+
+@pytest.fixture
+def pvt_data_rs_bo():
+    return PVTData(
+        np.array([100, 200, 300]),
+        np.array([20, 30, 40]),
+    )
+
+
+@pytest.fixture
+def pvt_data_pb():
+    return PVTData(
+        None,
+        np.array([20, 30, 40]),
+        np.array([50, 100, 150]),
+    )
+
+
+@pytest.fixture
+def compare_core_rs_bo(base_pvt, pvt_data_rs_bo):
+    return CompareCore(base_pvt, pvt_data_rs_bo)
+
+
+@pytest.fixture
+def compare_core_pb(base_pvt, pvt_data_pb):
+    return CompareCore(base_pvt, pvt_data_pb)
 
 
 PVT_Test_data_rs_bo = [
