@@ -15,9 +15,9 @@ class UnfpyCore(BaseCore):
         self,
     ) -> np.ndarray:
         rs = unf.pvt_rs_m3m3(
-            **self.pvt_data,
             gamma_oil=self.dataset["gamma_oil"],
             gamma_gas=self.dataset["gamma_gas"],
+            **self.pvt_data,
         )
         return rs
 
@@ -31,8 +31,8 @@ class UnfpyCore(BaseCore):
 
     def calculate_bo(self) -> np.ndarray:
         bo = unf.pvt_b_oil_m3m3(
-            **self.pvt_data,
             gamma_oil=self.dataset["gamma_oil"],
             gamma_gas=self.dataset["gamma_gas"],
+            **self.pvt_data,
         )
         return bo
