@@ -1,48 +1,31 @@
-from configs.default import DefaultConfig
-from configs.generator_data import GeneratorPressure, GeneratorRSB
-from core.runner import ComparisonRunner
+import numpy as np
+
+from core.compare_core import CompareCore
+from data.config_data import Data
+from data.pvt_data import PVTData
+from visualisation.graphs_core import GraphsCore
 
 
 def main() -> None:
-    config = DefaultConfig(
-        gamma_gas=0.75,
-        gamma_oil=0.86,
+
+    dataset = Data(
+        gamma_oil=0.8,
         gamma_wat=1,
-        rsb_m3m3=120,
-        pb_atma=10,
-        t_res_C=90,
-        bob_m3m3=100,
-        muob_cP=5,
-        pvt_corr_set=0,
+        gamma_gas=0.4,
+        PVT_corr_set=0,
     )
 
-    runner = ComparisonRunner(config)
+    pvt_data = PVTData()
+    pvt_data.set_p_atma_linspace(1, 300, 100)
+    pvt_data.t_C = np.array([80 for _ in range(100)])
+    pvt_data.set_rsb_m3m3_linspace(1, 500, 100)
+    compare = CompareCore(dataset, pvt_data)
+    graphs = GraphsCore(compare, pvt_data)
 
-    # Сценарий 1: варьируем газосодержание при насыщении (rsb) при фиксированных p=50 атм, t=80°C
-    gen_rsb = GeneratorRSB(config, constant_parameter=(50.0, 80.0))
-    runner.run(
-        generator=gen_rsb,
-        min_val=100,
-        max_val=500,
-        n_points=100,
-        x_parameter="rsb_m3m3",
-        x_label="Газосодержание при давлении насыщения, м³/м³",
-        plot_title="Сравнение unfpy vs unifloc — варьирование Rsb",
-        save_path="comparison_rsb.png",
-    )
-
-    # Сценарий 2: варьируем давление при фиксированных rsb=120 м³/м³, t=80°C
-    gen_p = GeneratorPressure(config, constant_parameter=80.0)
-    runner.run(
-        generator=gen_p,
-        min_val=10,
-        max_val=200,
-        n_points=100,
-        x_parameter="p_atma",
-        x_label="Давление, атм",
-        plot_title="Сравнение unfpy vs unifloc — варьирование давления",
-        save_path="comparison_pressure.png",
-    )
+    graphs.plot_rs()  # только Rs
+    graphs.plot_bo()  # только Bo
+    graphs.plot_pb()  # только Pb
+    # graphs.plot_all("all.png")  # все три сразу
 
 
 if __name__ == "__main__":
