@@ -23,7 +23,8 @@ class UnfpyCore(BaseCore):
 
     def calculate_pb(self) -> np.ndarray:
         pb = unf.pvt_pb_atma(
-            self.pvt_data.t_c,
+            self.pvt_data.rsb_m3m3,
+            self.pvt_data.t_C,
             gamma_oil=self.dataset["gamma_oil"],
             gamma_gas=self.dataset["gamma_gas"],
         )
